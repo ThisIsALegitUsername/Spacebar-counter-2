@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="./style.css">
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="./index.js" defer></script>
+		<title>Spacebar counter v2</title>
+		<h1>Press R to start.</h1>
+		<h1 style="display:none;"><span id="timer">3</span></h1>
+		<h1 style="margin-bottom: 0; display:none;">You've pressed the spacebar <span id="times">0</span> times</h1>
+		<h2 style="text-align:left; display: none; position:absolute; top:0" id="countdown">15</h2>
+		<h1 style="display:none;">In 15 seconds, you pressed the spacebar <span id="total" style="color:red">X</span> times.</h1>
+		<h2 style="display:none;">This means that you were pressing at a speed of <span id="sps" style="color:red;">X</span> spacebars per second. This puts you at <span id="leaderboardr" style="font-style:italic;color:red;">#X</span> on the leaderboards.</h2>
+		<div class="leaderboardcontainer">
+			<div class="leaderboard-text">Leaderboards</div>
+			<div class="contentwrapper">
+			</div>
+		</div>
+    <form style="display:none">
+      <input type="text" id="username" placeholder="Username (CANNOT BE CHANGED)" onkeypress="return validate(event)" name="username">
+      <br>
+          <button onclick="submituser();">Submit</button>
+    </form>
+		</body>
+</html>
