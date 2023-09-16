@@ -1,3 +1,5 @@
+let submitUser;
+
 (function() {
 	const socket = io();
 
@@ -8,7 +10,12 @@
 	var countdown = 16;
   var tempdie = 16;
 	var timer2;
-  
+
+function reverseExpression(expression) {
+    const parts = expression.split(':');
+    const reversed = parts[1] + ':' + parts[0];
+    return reversed;
+}
 
 	function updateLeaderboard() {
 		fetch('./leaderboards.txt').then(response => {
@@ -21,9 +28,10 @@
 				data.split(' ').forEach(v => {
 					if (spot <= 30) {
 						var spane = document.createElement("span");
-						var spanet = document.createTextNode(spot + ". " + v);
+						//var spanet = document.createTextNode(spot + ". " + reverseExpression(v));
+            spane.innerHTML = '<span style="color: red;">' + spot + '. </span>' + reverseExpression(v);
 
-						spane.appendChild(spanet);
+						//spane.appendChild(spanet);
 						document.querySelector('body > div > div.contentwrapper').append(spane);
 						spot++;
 					} else {
@@ -45,6 +53,7 @@
 		document.querySelector('body > h1:nth-child(5)').style.display = "none";
 		document.querySelector('body > h2:nth-child(6)').style.display = "none";
     document.querySelector('body > form').style.display = "none";
+    document.querySelector('body > button').style.display = 'none';
 		sethits(0);
 		started = false;
 		timeLeft = 4;
@@ -88,6 +97,7 @@
 		document.querySelector('body > h2:nth-child(6)').style.display = "block";
     if(localStorage.getItem('username') === null){
       document.querySelector('body > form').style.display = "block";
+      document.querySelector('body > button').style.display = "block";
     }
     if(localStorage.getItem('username') !== null){
 		  socket.emit("send hits", hits + ":" + localStorage.getItem('username'));
@@ -128,14 +138,23 @@
 	socket.on("request loc", function() {
 		socket.emit("send loc", window.location.href);
 	});
+
+  submitUser = function(){
+    localStorage.setItem('username', document.querySelector('#username').value);
+    socket.emit("send hits", hits + ":" + document.querySelector('#username').value);
+    console.log('submitted 2');
+  }
+  
 }());
 
 function submituser(){
-  localStorage.setItem('username', document.querySelector('#username').value);
+  submitUser();
+  console.log('submitted');
+  //localStorage.setItem('username', document.querySelector('#username').value);
   //io().emit("send hits", hits + ":" + document.querySelector('#username').value);
 }
 
-            function validate(event) {
-      var key = event.which || event.keyCode || 0;
-      return ((key >= 65 && key <= 92) || (key >= 97 && key <= 124))
-    }
+function validate(event) {
+  var key = event.which || event.keyCode || 0;
+  return ((key >= 65 && key <= 92) || (key >= 97 && key <= 124))
+}

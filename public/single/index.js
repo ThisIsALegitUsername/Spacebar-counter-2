@@ -7,11 +7,11 @@ function sethits(hitsx) {
 }
 
 function save(){
-  localStorage.setItem("hits", hits);
+  localStorage.setItem("hits", btoa(hits));
 }
 
 function load(){
-  sethits(localStorage.getItem("hits"));
+  sethits(atob(localStorage.getItem("hits")));
 }
 
 load();

@@ -13,7 +13,7 @@
 		<h1 style="margin-bottom: 0; display:none;">You've pressed the spacebar <span id="times">0</span> times</h1>
 		<h2 style="text-align:left; display: none; position:absolute; top:0" id="countdown">15</h2>
 		<h1 style="display:none;">In 15 seconds, you pressed the spacebar <span id="total" style="color:red">X</span> times.</h1>
-		<h2 style="display:none;">This means that you were pressing at a speed of <span id="sps" style="color:red;">X</span> spacebars per second. This puts you at <span id="leaderboardr" style="font-style:italic;color:red;">#X</span> on the leaderboards.</h2>
+		<h2 style="display:none;">This means that you were pressing at a speed of <span id="sps" style="color:red;">X</span> spacebars per second. <!--This puts you at <span id="leaderboardr" style="font-style:italic;color:red;">#X</span> on the leaderboards.--></h2>
 		<div class="leaderboardcontainer">
 			<div class="leaderboard-text">Leaderboards</div>
 			<div class="contentwrapper">
@@ -22,7 +22,7 @@
     <form style="display:none">
       <input type="text" id="username" placeholder="Username (CANNOT BE CHANGED)" onkeypress="return validate(event)" name="username">
       <br>
-          <button onclick="submituser();">Submit</button>
     </form>
+    <button onclick="submituser();" style="display:none;">Submit</button>
 		</body>
 </html>
