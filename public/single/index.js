@@ -1,5 +1,5 @@
-var text = document.querySelector("#times");
-var hits = 0;
+const text = document.querySelector("#times");
+let hits = 0;
 
 function sethits(hitsx) {
   hits = hitsx;
@@ -11,13 +11,13 @@ function save(){
 }
 
 function load(){
-  sethits(atob(localStorage.getItem(atob('hits'))));
+  sethits(atob(localStorage.getItem(btoa('hits'))));
 }
 
 load();
 
 document.body.onkeyup = function(e) {
-  if(e.keyCode == 32 ) {
+  if(e.keyCode === 32 ) {
     e.preventDefault();
     hits++;
     sethits(hits);

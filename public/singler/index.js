@@ -3,19 +3,17 @@ let submitUser;
 (function() {
   const socket = io();
 
-  var hits = 0;
-  var started = false;
-  var timer;
-  var timeLeft = 4;
-  var countdown = 16;
-  var tempdie = 16;
-  var timer2;
+  let hits = 0;
+  let started = false;
+  let timer;
+  let timeLeft = 4;
+  let countdown = 16;
+  let timer2;
 
   function reverseExpression(expression) {
     const parts = expression.split(':');
     if (parts[1] != null) {
-      const reversed = parts[1] + ':' + parts[0];
-      return reversed;
+      return parts[1] + ':' + parts[0];
     }
   }
 
@@ -26,18 +24,18 @@ let submitUser;
       }
       return response.text();
     }).then(data => {
-      var spot = 1;
+      let spot = 1;
       data.split(' ').forEach(v => {
-        if (spot == data.split(' ').length)
+        if (spot === data.split(' ').length)
           return;
         if (spot <= 30) {
-          var spane = document.createElement("span");
+          const spane = document.createElement("span");
           spane.innerHTML = '<span style="color: red;">' + spot + '. </span>' + reverseExpression(v);
           document.querySelector('body > div > div.contentwrapper').append(spane);
           spot++;
         } else {
-          var hi = document.createElement("span");
-          var hi1 = document.createTextNode("leaderboard ranks are limited to top 30");
+          const hi = document.createElement("span");
+          const hi1 = document.createTextNode("leaderboard ranks are limited to top 30");
           hi.appendChild(hi1);
           document.querySelector('body > div > div.contentwrapper').append(hi);
         }
@@ -60,7 +58,7 @@ let submitUser;
     document.querySelector('#countdown').style.display = "none";
     clearInterval(timer2)
     clearInterval(timer);
-    countdown = tempdie;
+    countdown = 16;
     timer = setInterval(updateTimer, 1000);
     updateTimer();
     document.querySelector('body > h1:nth-child(1)').style.display = "none";
@@ -125,12 +123,12 @@ let submitUser;
   }
 
   document.body.onkeyup = function(e) {
-    if (e.keyCode == 32 && started) {
+    if (e.keyCode === 32 && started) {
       e.preventDefault();
       hits++;
       sethits(hits);
     }
-    if (e.keyCode == 82 && (document.activeElement != document.querySelector('#username'))) {
+    if (e.keyCode === 82 && (document.activeElement !== document.querySelector('#username'))) {
       restart();
     }
   }

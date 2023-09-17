@@ -8,6 +8,8 @@
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="./index.js" defer></script>
 		<title>Spacebar counter v2</title>
+	</head>
+	<body>
 		<h1>Press R to start.</h1>
 		<h1 style="display:none;"><span id="timer">3</span></h1>
 		<h1 style="margin-bottom: 0; display:none;">You've pressed the spacebar <span id="times">0</span> times</h1>
@@ -20,7 +22,8 @@
 			</div>
 		</div>
     <form style="display:none">
-      <input type="text" id="username" placeholder="Username (CANNOT BE CHANGED)" onkeypress="return validate(event)" name="username">
+		<label for="username"></label>
+		<input type="text" id="username" placeholder="Username (CANNOT BE CHANGED)" onkeypress="return validate(event)" name="username">
       <br>
     </form>
     <button onclick="submituser();" style="display:none;">Submit</button>

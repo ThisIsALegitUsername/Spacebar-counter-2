@@ -16,13 +16,6 @@ server.listen(port, function() {
   console.log("listening on port " + port);
 });
 
-
-//io.emit = send
-//socket.on = recieve
-//socket.on("send message", function(name, message) {
-//    io.emit('receive message', name, message);
-//  });
-
 io.on("connection", function(socket) {
   socket.emit("request loc");
 
