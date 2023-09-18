@@ -11,7 +11,7 @@ function save(){
 }
 
 function load(){
-  sethits(atob(localStorage.getItem(btoa('hits'))));
+  sethits(parseInt(atob(localStorage.getItem(btoa('hits')))));
 }
 
 load();
