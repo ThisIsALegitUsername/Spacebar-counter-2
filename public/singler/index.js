@@ -26,8 +26,9 @@ let submitUser;
       return response.text();
     }).then(data => {
       let spot = 1;
+      var thirty = false;
       data.split(' ').forEach(v => {
-        if (spot === data.split(' ').length)
+        if (spot === data.split(' ').length || thirty)
           return;
         if (spot <= 30) {
           const spane = document.createElement("span");
@@ -39,6 +40,7 @@ let submitUser;
           const hi1 = document.createTextNode("leaderboard ranks are limited to top 30");
           hi.appendChild(hi1);
           document.querySelector('body > div > div.contentwrapper').append(hi);
+          thirty = true;
         }
       });
     }).catch(error => {
@@ -155,9 +157,13 @@ let submitUser;
 
 }());
 
+var hasntsubmitted = true;
 function submituser() {
+  if(hasntsubmitted){
   submitUser();
   console.log('submitted');
+  }
+  hasntsubmitted = false;
   //localStorage.setItem('username', document.querySelector('#username').value);
   //io().emit("send hits", hits + ":" + document.querySelector('#username').value);
 }
