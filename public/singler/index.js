@@ -9,6 +9,7 @@ let submitUser;
   let timeLeft = 4;
   let countdown = 16;
   let timer2;
+  let accessServerHitKey;
 
   function reverseExpression(expression) {
     const parts = expression.split(':');
@@ -98,7 +99,8 @@ let submitUser;
       document.querySelector('body > button').style.display = "block";
     }
     if (localStorage.getItem(btoa('username')) !== null) {
-      socket.emit("send hits", hits + ":" + localStorage.getItem(btoa('username')));
+      socket.emit('send hits', hits + ":" + localStorage.getItem(btoa('username')), accessServerHitKey);
+      console.log('sent hits no user');
     }
   }
 
@@ -136,10 +138,18 @@ let submitUser;
   socket.on("request loc", function() {
     socket.emit("send loc", window.location.href);
   });
+  
+    socket.on('request key', function() {
+      socket.emit('send key', 'verify 82defcf324571e70b0521d79cce2bf3fffccd69');
+  });
+
+  socket.on('send hitKey', function(key){
+    accessServerHitKey = key;
+  });
 
   submitUser = function() {
     localStorage.setItem(btoa('username'), document.querySelector('#username').value);
-    socket.emit("send hits", hits + ":" + document.querySelector('#username').value);
+    socket.emit("send hits", hits + ":" + document.querySelector('#username').value, accessServerHitKey);
     console.log('submitted 2');
   }
 

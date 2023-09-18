@@ -1,4 +1,5 @@
 const express = require("express");
+const crypto = require("crypto");
 const fs = require('fs');
 const socketio = require("socket.io");
 const http = require("http");
@@ -9,6 +10,7 @@ const server = http.createServer(app);
 const io = new socketio.Server(server);
 
 const filePath = './public/singler/leaderboards.txt';
+const userxAccessKey = new Map();
 
 app.use(express.static("public"));
 
@@ -17,13 +19,37 @@ server.listen(port, function() {
 });
 
 io.on("connection", function(socket) {
-  socket.emit("request loc");
+  var serverKey = crypto.randomBytes(20).toString('hex');
 
+  socket.emit("request loc");
+  socket.emit("request key");
+  
   socket.on("send loc", function(loc) {
-    console.log("A user with id " + socket.id + " and loc " + loc.split('/')[3] + " joined.")
+    console.log("A user with id " + socket.id + " and loc " + loc.split('/')[3] + " joined.");
   });
 
-  socket.on('send hits', function(hits) {
+  socket.on("send key", function(clientKey){
+    if(clientKey === 'verify 82defcf324571e70b0521d79cce2bf3fffccd69'){
+      userxAccessKey.set(socket.id,  serverKey);
+      socket.emit('send hitKey', serverKey);
+    }
+  });
+
+socket.on('send hits', (hits, hitKey) => {
+    if (hitKey && userxAccessKey.get(socket.id) === hitKey){
+      fs.appendFile(filePath, hits + " ", err => {
+          if (err) {
+              console.log(err);
+          }
+          console.log('attempted to write ' + hits + ' into file.');
+          reorder(); // Call reorder after appending hits
+      });
+    } else {
+      console.log('Invalid access key or no access key provided');
+    }
+});
+
+  /*  socket.on('send hits', function(hits) {
     fs.appendFile(filePath, hits + " ", err => {
         if (err) {
             console.log(err);
@@ -32,6 +58,7 @@ io.on("connection", function(socket) {
         reorder(); // Call reorder after appending hits
     });
 });
+*/
 
 function reorder() {
     try {
