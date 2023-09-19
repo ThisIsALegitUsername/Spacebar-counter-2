@@ -1,8 +1,7 @@
 let submitUser;
 
-(function() {
+(() => {
   const socket = io();
-
   let hits = 0;
   let started = false;
   let timer;
@@ -14,7 +13,7 @@ let submitUser;
   function reverseExpression(expression) {
     const parts = expression.split(':');
     if (parts[1] != null) {
-      return parts[1] + ':' + parts[0];
+      return `${parts[1]}:${parts[0]}`;
     }
   }
 
@@ -26,7 +25,7 @@ let submitUser;
       return response.text();
     }).then(data => {
       let spot = 1;
-      var thirty = false;
+      let thirty = false;
       data.split(' ').forEach(v => {
         if (spot === data.split(' ').length || thirty)
           return;
@@ -55,11 +54,11 @@ let submitUser;
     document.querySelector('body > h2:nth-child(6)').style.display = "none";
     document.querySelector('body > form').style.display = "none";
     document.querySelector('body > button').style.display = 'none';
-    sethits(0);
+    setHits(0);
     started = false;
     timeLeft = 4;
     document.querySelector('#countdown').style.display = "none";
-    clearInterval(timer2)
+    clearInterval(timer2);
     clearInterval(timer);
     countdown = 16;
     timer = setInterval(updateTimer, 1000);
@@ -101,18 +100,16 @@ let submitUser;
       document.querySelector('body > button').style.display = "block";
     }
     if (localStorage.getItem(btoa('username')) !== null) {
-      socket.emit('send hits', hits + ":" + localStorage.getItem(btoa('username')), accessServerHitKey);
+      socket.emit('send hits', `${hits}:${localStorage.getItem(btoa('username'))}`, accessServerHitKey);
       console.log('sent hits no user');
     }
   }
 
   function updateCountdown() {
-    //console.log(countdown);
     countdown--;
     if (countdown > 0)
       document.querySelector('#countdown').innerHTML = countdown;
     else {
-      //console.log('stopped');
       clearInterval(timer2);
       countdown = 11;
       started = false;
@@ -121,7 +118,7 @@ let submitUser;
     }
   }
 
-  function sethits(hitsx) {
+  function setHits(hitsx) {
     hits = hitsx;
     document.querySelector("#times").innerHTML = hits;
   }
@@ -130,7 +127,7 @@ let submitUser;
     if (e.keyCode === 32 && started) {
       e.preventDefault();
       hits++;
-      sethits(hits);
+      setHits(hits);
     }
     if (e.keyCode === 82 && (document.activeElement !== document.querySelector('#username'))) {
       restart();
@@ -140,35 +137,33 @@ let submitUser;
   socket.on("request loc", function() {
     socket.emit("send loc", window.location.href);
   });
-  
-    socket.on('request key', function() {
-      socket.emit('send key', 'verify 82defcf324571e70b0521d79cce2bf3fffccd69');
+
+  socket.on('request key', function() {
+    socket.emit('send key', 'verify 82defcf324571e70b0521d79cce2bf3fffccd69');
   });
 
-  socket.on('send hitKey', function(key){
+  socket.on('send hitKey', function(key) {
     accessServerHitKey = key;
   });
 
+  let hasntsubmitted = true;
+
   submitUser = function() {
-    localStorage.setItem(btoa('username'), document.querySelector('#username').value);
-    socket.emit("send hits", hits + ":" + document.querySelector('#username').value, accessServerHitKey);
-    console.log('submitted 2');
+    if (hasntsubmitted) {
+      localStorage.setItem(btoa('username'), document.querySelector('#username').value);
+      socket.emit("send hits", `${hits}:${document.querySelector('#username').value}`, accessServerHitKey);
+      console.log('submitted 2');
+      console.log('submitted');
+    }
+    hasntsubmitted = false;
   }
+})();
 
-}());
-
-var hasntsubmitted = true;
 function submituser() {
-  if(hasntsubmitted){
-  submitUser();
-  console.log('submitted');
-  }
-  hasntsubmitted = false;
-  //localStorage.setItem('username', document.querySelector('#username').value);
-  //io().emit("send hits", hits + ":" + document.querySelector('#username').value);
+    submitUser();
 }
 
 function validate(event) {
-  var key = event.which || event.keyCode || 0;
-  return ((key >= 65 && key <= 92) || (key >= 97 && key <= 124))
+  const key = event.which || event.keyCode || 0;
+  return (key >= 65 && key <= 92) || (key >= 97 && key <= 124);
 }

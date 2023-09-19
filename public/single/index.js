@@ -2,7 +2,7 @@ const text = document.querySelector("#times");
 let hits = 0;
 
 function sethits(hitsx) {
-  hits = hitsx;
+  hits = hitsx === null ? 0 : hitsx;
   text.innerHTML = hits;
 }
 
